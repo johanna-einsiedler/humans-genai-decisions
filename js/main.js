@@ -11,7 +11,7 @@ import { VAC } from "./shared.js";
 const $ = (s) => document.querySelector(s);
 
 async function init() {
-  const d = await (await fetch("data/derived.json")).json();
+  const d = await (await fetch("data/derived.json", { cache: "no-cache" })).json();   // revalidate: the numbers move with each release
   const release = await loadRelease(`data/${d.meta.release_dir}`);
   await release.table();
   const ctx = { d, release, effects: d.effects, source: "both", forestMode: "effects",

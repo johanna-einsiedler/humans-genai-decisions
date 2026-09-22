@@ -27,7 +27,7 @@ export function placeholders(d) {
 const md = (s) => s.trim().split(/\n\s*\n/).map((p) => `<p>${p.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*(.+?)\*/g, "<em>$1</em>")}</p>`).join("");
 
 export async function loadText(d) {
-  const raw = await (await fetch("text.md")).text();
+  const raw = await (await fetch("text.md", { cache: "no-cache" })).text();
   const body = raw.replace(/<!--[\s\S]*?-->/, "");
   const wf = {}; const wfBlock = /written_for:\n((?:[ \t]+.*\n?)+)/.exec(body);
   if (wfBlock) for (const line of wfBlock[1].split("\n")) { const m = /^\s+(\w+):\s*([^#]+)/.exec(line); if (m) wf[m[1]] = m[2].trim(); }
