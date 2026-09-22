@@ -2,16 +2,16 @@
  "format": "metalens-release",
  "format_version": 1,
  "dataset": {
-  "title": "GenAI_HITL_09_11",
-  "slug": "genai-hitl-09-11-dc34036c",
+  "title": "GenAI – Human in the Loop",
+  "slug": "genai-human-in-the-loop-1636f30f",
   "author": null,
-  "citation": "[author] (2026). GenAI_HITL_09_11 (version 1) [Data set]. Metalens. https://beta.metalens.tech/dataset?id=dc34036c-ad70-4d06-b263-833a8a24ad1e",
+  "citation": "[author] (2026). GenAI – Human in the Loop (version 1) [Data set]. Metalens. https://beta.metalens.tech/dataset?id=1636f30f-96ae-4c12-9a05-b8a69b60f4cb",
   "published_url": null
  },
  "release": {
   "number": 1,
-  "created_at": "2026-09-22T00:31:54+02:00",
-  "content_sha": "fa579e4670954eb732fc1fc9b1d6450b16d9a9e410dfca13254cf404d9520b12",
+  "created_at": "2026-09-22T02:17:42+00:00",
+  "content_sha": "884c06abd7f252edd8ae7f7357d74f94810dc83eda3ca8022fa621cb4d9f937c",
   "notes": null,
   "changes": {
    "first": true,
@@ -40,27 +40,21 @@
      "records": 2
     },
     {
+     "doi": null,
+     "study": "Choi & Schwarcz (2025)",
+     "title": "AI Assistance in Legal Analysis: An Empirical Study",
+     "records": 2
+    },
+    {
      "doi": "10.1038/s41591-024-03456-y",
      "study": "Goh et al. (2025)",
      "title": "GPT4 assistance for improvement of physician performance on patient care tasks: a randomized controlled trial",
      "records": 1
     },
     {
-     "doi": null,
-     "study": "Wang et al. (2025)",
-     "title": "Can You Walk Me Through It? Explainable SMS Phishing Detection using LLM-based Agents",
-     "records": 2
-    },
-    {
      "doi": "10.1002/acp.70037",
      "study": "Kramer (2025)",
      "title": "Fusing ChatGPT and Human Decisions in Unfamiliar Face Matching",
-     "records": 2
-    },
-    {
-     "doi": null,
-     "study": "Choi & Schwarcz (2025)",
-     "title": "AI Assistance in Legal Analysis: An Empirical Study",
      "records": 2
     },
     {
@@ -70,9 +64,15 @@
      "records": 1
     },
     {
-     "doi": "10.1038/s41746-026-02545-1",
-     "study": "Everett et al. (2026)",
-     "title": "From tool to teammate in a randomized controlled trial of clinician-AI collaborative workflows for diagnosis",
+     "doi": null,
+     "study": "Wang et al. (2025)",
+     "title": "Can You Walk Me Through It? Explainable SMS Phishing Detection using LLM-based Agents",
+     "records": 2
+    },
+    {
+     "doi": "10.1038/s44360-025-00007-8",
+     "study": "Qazi et al. (2026)",
+     "title": "Large language model diagnostic assistance for physicians in a lower-middle-income country: a randomized controlled trial",
      "records": 1
     },
     {
@@ -82,9 +82,9 @@
      "records": 1
     },
     {
-     "doi": "10.1038/s44360-025-00007-8",
-     "study": "Qazi et al. (2026)",
-     "title": "Large language model diagnostic assistance for physicians in a lower-middle-income country: a randomized controlled trial",
+     "doi": "10.1038/s41746-026-02545-1",
+     "study": "Everett et al. (2026)",
+     "title": "From tool to teammate in a randomized controlled trial of clinician-AI collaborative workflows for diagnosis",
      "records": 1
     }
    ],
@@ -100,7 +100,7 @@
  },
  "engine": {
   "name": "metalens",
-  "git_sha": "4a80ce5926a6",
+  "git_sha": null,
   "version": "0.1.0"
  },
  "preset": {
