@@ -10,5 +10,11 @@
     "dataset": "genai-human-in-the-loop-1636f30f",
     "ref": "main"
   },
-  "description": "Vaccaro et al. (2024) on decision tasks, extended with new generative-AI experiments: forest plots, subgroups, and the raw human/AI/team scores."
+  "description": "Vaccaro et al. (2024) on decision tasks, extended with new generative-AI experiments: forest plots, subgroups, and the raw human/AI/team scores.",
+  "keywords": [
+    "human–AI collaboration",
+    "generative AI",
+    "decision tasks",
+    "meta-analysis"
+  ]
 }

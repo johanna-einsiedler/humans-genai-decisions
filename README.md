@@ -18,9 +18,9 @@ dataset exported as static files. The page reads those files directly; there is 
 | `lib/d3.v7.min.js` | D3, vendored |
 | `data/vaccaro.csv` | the paper's 370 effect sizes (authors' OSF repository, CC BY 4.0) |
 | `data/<release folder>/` | the Metalens release: `release.json`, `tables/*.json`, `evidence.json`, `README.md` |
-| `metalens.json` | tells Metalens which release this page shows (written by the fetch script); register the page on the dataset in Metalens and it is checked against the latest release |
+| `metalens.json` | tells Metalens which release this page shows, plus what its tile on the Metalens Dashboards page says: `preview` (image), `description` (one sentence), `authors` (optional), `keywords` (the page's own, else the dataset's) — written by the fetch script from `data/config.json`; register the page on the dataset in Metalens and it is checked against the latest release |
 | `scripts/fetch_release.py` | fetches the latest (or a pinned) release from `metalens-datasets` into `data/` |
-| `data/config.json` | `source`: the dataset in `metalens-datasets` · `release`: which release folder the page uses · `dataset_label`: how the dataset is called on the page · `genai_blurb`: the one sentence of the summary that describes the GenAI studies (the only hand-written statement about them; update it when the mix of studies changes) |
+| `data/config.json` | `source`: the dataset in `metalens-datasets` · `release`: which release folder the page uses · `dataset_label`: how the dataset is called on the page · `genai_blurb`: the one sentence of the summary that describes the GenAI studies (the only hand-written statement about them; update it when the mix of studies changes) · `description`, `authors`, `keywords`: what the Metalens tile shows |
 | `data/derived.json` | everything computed: effect sizes, pooled and subgroup estimates, descriptive fields. **Built, do not edit** |
 | `analysis/build.R` | builds `derived.json` exactly as the paper's analysis script (metafor) |
 | `analysis/validate.R` | shows that the method reproduces the paper's published estimates |
