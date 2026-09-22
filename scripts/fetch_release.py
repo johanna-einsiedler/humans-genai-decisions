@@ -24,7 +24,8 @@ def write_manifest(cfg, meta):
     (root / "metalens.json").write_text(json.dumps({
         "format": "metalens-dashboard", "dataset": cfg.get("source", {}).get("dataset"), "source_repo": cfg.get("source", {}).get("repo"),
         "release": cfg["release"], "release_number": meta["release"]["number"], "content_sha": meta["release"]["content_sha"],
-        "release_created_at": meta["release"]["created_at"]}, indent=2) + "\n")
+        "release_created_at": meta["release"]["created_at"], "preview": "preview.png",
+        "description": cfg.get("description", ""), "authors": cfg.get("authors", "")}, indent=2) + "\n")
 
 base = f"https://raw.githubusercontent.com/{src['repo']}/{src.get('ref', 'main')}/datasets/{src['dataset']}"
 
