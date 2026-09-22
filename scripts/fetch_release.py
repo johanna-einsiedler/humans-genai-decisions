@@ -19,6 +19,13 @@ src = cfg.get("source") or {}
 ap = argparse.ArgumentParser(); ap.add_argument("--pin", type=int); a = ap.parse_args()
 if not src.get("repo") or not src.get("dataset"):
     sys.exit("data/config.json needs source.repo (owner/name) and source.dataset (the folder under datasets/)")
+def write_manifest(cfg, meta):
+    """metalens.json next to index.html: what Metalens reads to learn which release this page shows."""
+    (root / "metalens.json").write_text(json.dumps({
+        "format": "metalens-dashboard", "dataset": cfg.get("source", {}).get("dataset"), "source_repo": cfg.get("source", {}).get("repo"),
+        "release": cfg["release"], "release_number": meta["release"]["number"], "content_sha": meta["release"]["content_sha"],
+        "release_created_at": meta["release"]["created_at"]}, indent=2) + "\n")
+
 base = f"https://raw.githubusercontent.com/{src['repo']}/{src.get('ref', 'main')}/datasets/{src['dataset']}"
 
 def get(path):
@@ -44,5 +51,6 @@ for f in files:
     (target / f).write_bytes(get(f"releases/v{number}/{f}"))
 cfg["release"] = folder
 cfg_path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n")
+write_manifest(cfg, meta)
 print(f"fetched release v{number} ({meta['release']['content_sha'][:8]}, {meta['release']['created_at'][:10]}) into data/{folder}; config.release updated")
 sys.exit(3)

@@ -1,0 +1,9 @@
+{
+  "format": "metalens-dashboard",
+  "dataset": "genai-human-in-the-loop-1636f30f",
+  "source_repo": "johanna-einsiedler/metalens-datasets",
+  "release": "genai-human-in-the-loop-1636f30f-v1",
+  "release_number": 1,
+  "content_sha": "884c06abd7f252edd8ae7f7357d74f94810dc83eda3ca8022fa621cb4d9f937c",
+  "release_created_at": "2026-09-22T02:17:42+00:00"
+}
