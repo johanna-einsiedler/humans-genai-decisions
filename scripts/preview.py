@@ -14,7 +14,10 @@ from playwright.sync_api import sync_playwright
 base = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8765").rstrip("/")
 out = Path(__file__).resolve().parents[1] / "preview.png"
 with sync_playwright() as pw:
-    b = pw.chromium.launch(channel="chrome", headless=True)
+    try:
+        b = pw.chromium.launch(channel="chrome", headless=True)      # the system Chrome …
+    except Exception:
+        b = pw.chromium.launch(headless=True)                        # … or Playwright's own (the Action)
     pg = b.new_context(viewport={"width": 1200, "height": 630}, device_scale_factor=2).new_page()
     pg.goto(f"{base}/scripts/preview.html"); pg.wait_for_selector("body[data-ready]", timeout=30000); pg.wait_for_timeout(500)
     pg.screenshot(path=str(out), clip={"x": 0, "y": 0, "width": 1200, "height": 630}, scale="css")
