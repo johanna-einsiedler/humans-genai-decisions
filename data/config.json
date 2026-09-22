@@ -4,5 +4,10 @@
   "genai_blurb": "all focusing on large language models in the context of decision tasks",
   "authors": "Martin Haus, Johanna Einsiedler, Tiago Peixoto",
   "metalens_url": "https://beta.metalens.tech",
-  "verified_by": "Martin Haus"
+  "verified_by": "Martin Haus",
+  "source": {
+    "repo": "johanna-einsiedler/metalens-datasets",
+    "dataset": "genai-hitl-09-15-2bf723fd",
+    "ref": "main"
+  }
 }

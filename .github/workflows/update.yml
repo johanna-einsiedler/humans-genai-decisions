@@ -1,29 +1,49 @@
-# Rebuilds the numbers and publishes the page whenever the data changes.
-# Ready for the day this folder is a GitHub repository with Pages enabled (Settings → Pages → GitHub Actions).
+# Keeps the page in step with the dataset: fetch the latest release from metalens-datasets,
+# rebuild the numbers with R, commit, deploy GitHub Pages.
+# Runs daily, on every push, and by hand (Actions → update dashboard → Run workflow).
 name: update dashboard
 on:
   push:
-    paths: ["data/**", "analysis/**"]
+    branches: [main]
+  schedule:
+    - cron: "17 5 * * *"
   workflow_dispatch:
+    inputs:
+      pin:
+        description: "release number to pin (empty = latest)"
+        required: false
 permissions:
   contents: write
   pages: write
   id-token: write
+concurrency: { group: pages, cancel-in-progress: false }
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: fetch the latest release of the dataset
+        id: fetch
+        run: |
+          set +e
+          python3 scripts/fetch_release.py ${{ inputs.pin && format('--pin {0}', inputs.pin) || '' }}
+          code=$?; set -e
+          if [ "$code" = "3" ]; then echo "changed=true" >> "$GITHUB_OUTPUT"; elif [ "$code" != "0" ]; then exit $code; fi
       - uses: r-lib/actions/setup-r@v2
+        if: steps.fetch.outputs.changed == 'true' || github.event_name == 'push'
         with: { use-public-rspm: true }
       - uses: r-lib/actions/setup-r-dependencies@v2
+        if: steps.fetch.outputs.changed == 'true' || github.event_name == 'push'
         with: { packages: "any::metafor, any::clubSandwich, any::jsonlite" }
-      # fails with a readable message when the release no longer offers a column the page needs
-      - run: Rscript analysis/build.R
-      - name: commit the rebuilt numbers
+      # stops with a readable message when the release no longer offers a column the page needs
+      - name: rebuild the numbers
+        if: steps.fetch.outputs.changed == 'true' || github.event_name == 'push'
+        run: Rscript analysis/build.R
+      - name: commit the new release and numbers
+        if: steps.fetch.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/derived.json && (git diff --cached --quiet || git commit -m "rebuild derived.json") && git push || true
+          git add data && git commit -m "update to $(python3 -c "import json; print(json.load(open('data/config.json'))['release'])")" && git push
       - uses: actions/upload-pages-artifact@v3
         with: { path: "." }
   deploy:

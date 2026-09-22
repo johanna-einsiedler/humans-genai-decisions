@@ -18,13 +18,20 @@ dataset exported as static files. The page reads those files directly; there is 
 | `lib/d3.v7.min.js` | D3, vendored |
 | `data/vaccaro.csv` | the paper's 370 effect sizes (authors' OSF repository, CC BY 4.0) |
 | `data/<release folder>/` | the Metalens release: `release.json`, `tables/*.json`, `evidence.json`, `README.md` |
-| `data/config.json` | `release`: which release folder the page uses · `dataset_label`: how the dataset is called on the page · `genai_blurb`: the one sentence of the summary that describes the GenAI studies (the only hand-written statement about them; update it when the mix of studies changes) |
+| `scripts/fetch_release.py` | fetches the latest (or a pinned) release from `metalens-datasets` into `data/` |
+| `data/config.json` | `source`: the dataset in `metalens-datasets` · `release`: which release folder the page uses · `dataset_label`: how the dataset is called on the page · `genai_blurb`: the one sentence of the summary that describes the GenAI studies (the only hand-written statement about them; update it when the mix of studies changes) |
 | `data/derived.json` | everything computed: effect sizes, pooled and subgroup estimates, descriptive fields. **Built, do not edit** |
 | `analysis/build.R` | builds `derived.json` exactly as the paper's analysis script (metafor) |
 | `analysis/validate.R` | shows that the method reproduces the paper's published estimates |
 | `.github/workflows/update.yml` | rebuilds and deploys on GitHub when `data/` changes |
 
-## Update with a new release
+## Updates
+
+The page follows the dataset published in `metalens-datasets` (`data/config.json` → `source`):
+
+- **automatically**: the GitHub workflow runs daily (and on demand: Actions → *update dashboard* → *Run workflow*), reads `releases/latest.json` of the dataset, fetches a new release into `data/`, reruns the R analysis, commits and redeploys the page. If a conclusion in `text.md` no longer holds, the page shows a review notice.
+- **by hand**: `python3 scripts/fetch_release.py` (add `--pin N` for a specific release), then `Rscript analysis/build.R`.
+- **from a downloaded zip** (a release that is not on GitHub):
 
 1. In Metalens: dataset page → Release history → **⬇ files** of the new release; unzip into `data/`.
 2. Put the folder name into `data/config.json`.
