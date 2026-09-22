@@ -45,7 +45,15 @@ number = a.pin or latest["number"]
 folder = f"{src['dataset']}-v{number}"
 target = root / "data" / folder
 if cfg.get("release") == folder and (target / "release.json").exists():
-    print(f"up to date: release v{number} ({latest.get('content_sha', '')[:8]})"); sys.exit(0)
+    # the same release — but its metadata may have moved on (a DOI minted after publication)
+    have = json.loads((target / "release.json").read_text())
+    if (have.get("release") or {}).get("doi") == latest.get("doi"):
+        print(f"up to date: release v{number} ({latest.get('content_sha', '')[:8]})"); sys.exit(0)
+    meta = json.loads(get(f"releases/v{number}/release.json"))
+    (target / "release.json").write_bytes(json.dumps(meta, ensure_ascii=False, indent=1).encode("utf-8"))
+    (target / "README.md").write_bytes(get(f"releases/v{number}/README.md"))
+    write_manifest(cfg, meta)
+    print(f"release v{number} unchanged, its DOI is now {meta['release'].get('doi')}; release.json refreshed"); sys.exit(3)
 meta = json.loads(get(f"releases/v{number}/release.json"))
 files = meta.get("files") or latest.get("files") or []
 target.mkdir(parents=True, exist_ok=True)
