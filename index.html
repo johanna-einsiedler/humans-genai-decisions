@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Humans & GenAI in Decision Tasks: a living meta-analysis</title>
+  <meta name="description" content="A living extension of Vaccaro, Almaatouq and Malone (2024): when do human–AI combinations beat humans or AI alone in decision tasks?"/>
+  <link rel="icon" href="data:,"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script src="lib/d3.v7.min.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="kicker">A living meta-analysis · decision tasks</p>
+      <h1>Humans &amp; GenAI in Decision Tasks</h1>
+      <p class="lede"><a href="https://doi.org/10.1038/s41562-024-02024-1" target="_blank" rel="noopener">Vaccaro, Almaatouq and Malone (2024)</a> pooled three years of experiments and found that human–AI teams, on average, did <em>worse</em> than the better of the human or the AI working alone. Those experiments end in mid-2023, before large language models became everyday tools. This page keeps their evidence on decision tasks and adds new experiments with generative AI.</p>
+      <div class="dataline" id="dataline"></div>
+      <p class="byline" id="byline"></p>
+    </header>
+
+    <section id="summary"><h2>Summary Statistics</h2><div class="tiles" id="tiles"></div><div class="prose" id="summary-text"></div></section>
+
+    <section id="sec-forest">
+      <h2>Forest Plots – Effect Size Comparison</h2>
+      <p class="prose" id="forest-intro"></p>
+      <div class="control" id="forest-mode"></div>
+      <div class="legend" id="forest-legend"></div>
+      <div class="two" id="forest"></div>
+      <div id="forest-panel"></div><details class="rows"><summary>show the rows</summary><div id="forest-table"></div></details>
+    </section>
+
+    <section id="sec-sub">
+      <h2>Where does it differ?</h2>
+      <p class="prose">Average effects by subgroup, as in Fig. 2 of <span data-vac></span>, with two lines per row: their decision-task experiments and the GenAI studies. A row is shown only where the GenAI studies offer enough to estimate it; everything else is left out rather than drawn from one or two experiments.</p>
+      <div class="legend" id="sub-legend"></div>
+      <div id="subgroups"></div><p class="note" id="sub-note"></p>
+    </section>
+
+    <section id="sec-desc">
+      <h2>In the original units</h2>
+      <p class="prose">The three figures below use the scores as the papers report them, for outcomes on a proportion scale (accuracy and similar). They need no standard deviations, so more of the GenAI studies can take part.</p>
+      <h3>Who is stronger alone, and does teaming up help?</h3>
+      <p class="prose">Each point is one comparison: the human-alone score against the AI-alone score. Above the diagonal the AI is stronger alone. The colour says whether the combination beat the stronger of the two.</p>
+      <div class="control" data-source-control></div>
+      <div class="legend" id="scatter-legend"></div><div id="scatter"></div><div id="scatter-panel"></div>
+
+      <h3>Who is most often the worst of the three?</h3>
+      <p class="prose">For every comparison: which of human alone, AI alone and the team scored lowest. All decision-task comparisons count here, whatever their scale.</p>
+      <div class="control" data-source-control></div>
+      <div class="legend" id="worst-legend"></div><div id="worst"></div>
+
+      <h3>How much is gained or lost against the stronger one?</h3>
+      <p class="prose">The combination’s score minus the best solo score, in percentage points, split by who is stronger alone. Zero means the team did exactly as well as its stronger member.</p>
+      <div class="control" data-source-control></div>
+      <div class="legend" id="margin-legend"></div><div id="margin"></div><div id="margin-panel"></div>
+
+      <h3>How big must the AI’s lead be before the AI alone wins?</h3>
+      <p class="prose">Moving right, the AI’s advantage over the human grows. The line is the share of comparisons, among all those with an AI advantage up to that point, in which the AI alone beat the human–AI combination.</p>
+      <div class="control" data-source-control></div>
+      <div id="threshold"></div>
+
+      <h3>The AI’s lead, bin by bin</h3>
+      <p class="prose">Only comparisons where the AI alone is stronger, grouped by the size of its lead: how often does the team still beat the AI alone? In the experiments of <span data-vac></span> it often does when the lead is small, and rarely once the lead passes ten to fifteen points.</p>
+      <div class="control" data-source-control></div>
+      <div class="legend" id="bins-legend"></div><div id="bins"></div><details class="rows"><summary>show as a table</summary><div id="bins-table"></div></details>
+      <details class="rows"><summary>show the rows</summary><div id="desc-table"></div></details>
+    </section>
+
+    <section id="methods"><h2>Methods and data</h2><div class="prose" id="methods-text"></div></section>
+    <footer id="foot"></footer>
+  </main>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
