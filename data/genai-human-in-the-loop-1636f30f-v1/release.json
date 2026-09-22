@@ -5,8 +5,17 @@
   "title": "GenAI – Human in the Loop",
   "slug": "genai-human-in-the-loop-1636f30f",
   "author": null,
-  "citation": "[author] (2026). GenAI – Human in the Loop (version 1) [Data set]. Metalens. https://beta.metalens.tech/dataset?id=1636f30f-96ae-4c12-9a05-b8a69b60f4cb",
-  "published_url": null
+  "citation": "Martin Haus (2026). GenAI – Human in the Loop (version 1) [Data set]. Metalens. https://github.com/johanna-einsiedler/metalens-datasets/tree/main/datasets/genai-human-in-the-loop-1636f30f",
+  "published_url": "https://github.com/johanna-einsiedler/metalens-datasets/tree/main/datasets/genai-human-in-the-loop-1636f30f",
+  "description": "Articles on experiments comparing the performance of humans alone, generative AI alone and human + genAI on decision tasks.",
+  "keywords": [
+   "human-AI collaboration",
+   "human in the loop",
+   "genAI",
+   "LLMs",
+   "decision support",
+   "generative AI"
+  ]
  },
  "release": {
   "number": 1,
@@ -90,7 +99,9 @@
    ],
    "papers_removed": [],
    "preset_changed": false
-  }
+  },
+  "doi": "10.5281/zenodo.22898717",
+  "concept_doi": "10.5281/zenodo.22898716"
  },
  "credibility": {
   "tier": "human_verified",

@@ -1,10 +1,10 @@
 # GenAI – Human in the Loop — release v1
 
-Frozen on 2026-09-22 · content sha256 `884c06abd7f252edd8ae7f7357d74f94810dc83eda3ca8022fa621cb4d9f937c` · Human-verified · 100% agree · 9 papers
+Frozen on 2026-09-22 · content sha256 `884c06abd7f252edd8ae7f7357d74f94810dc83eda3ca8022fa621cb4d9f937c` · Human-verified · 100% agree · 9 papers · DOI [10.5281/zenodo.22898717](https://doi.org/10.5281/zenodo.22898717)
 
 ## How to cite
 
-[author] (2026). GenAI – Human in the Loop (version 1) [Data set]. Metalens. https://beta.metalens.tech/dataset?id=1636f30f-96ae-4c12-9a05-b8a69b60f4cb
+Martin Haus (2026). GenAI – Human in the Loop (version 1) [Data set]. Metalens. https://github.com/johanna-einsiedler/metalens-datasets/tree/main/datasets/genai-human-in-the-loop-1636f30f https://doi.org/10.5281/zenodo.22898717
 
 ## Files
 
