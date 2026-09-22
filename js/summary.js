@@ -38,8 +38,47 @@ export function renderMethods({ d }) {
     <p><b>Proportion scale.</b> The figures in original units use comparisons whose scores lie between 0 and 1 (${m.sources.vaccaro.k_prop} from Vaccaro et al., ${m.sources.new.k_prop} from the GenAI studies); only “who is the worst of the three” uses all comparisons. In the lead-by-bin figure, bins are right-closed (0–5 means above 0 up to 5) and a tie between team and AI does not count as the team beating the AI. GenAI studies that report an accuracy or percent score on 0–100 are divided by 100.</p>
     <p><b>Subgroups.</b> A subgroup row is drawn only when the GenAI studies have at least ${m.rule.min_k} effect sizes from at least ${m.rule.min_exp} experiments in it and Vaccaro et al. have that level too.</p>
     <p><b>The GenAI data</b> (“${esc(m.dataset_label)}”) were extracted from the papers with <a href="${esc(m.metalens_url || "https://beta.metalens.tech")}" target="_blank" rel="noopener">Metalens</a>, checked against the source by ${esc(m.verified_by || "a person")}, and frozen as release v${rel.number} (${esc(day(rel.created_at))}, ${esc((rel.credibility || {}).label || "")}).</p>`;
-  document.querySelector("#foot").innerHTML = `
-    <p><b>Cite the original study:</b> Vaccaro, M., Almaatouq, A. &amp; Malone, T. (2024). When combinations of humans and AI are useful: A systematic review and meta-analysis. <i>Nature Human Behaviour</i>, 8, 2293–2303. <a href="https://doi.org/10.1038/s41562-024-02024-1">doi:10.1038/s41562-024-02024-1</a> (data: CC BY 4.0, via the authors’ OSF repository).</p>
-    ${rel.citation ? `<p><b>Cite the GenAI data:</b> ${esc(rel.citation)} Release v${rel.number}.</p>` : ""}
-    <p class="muted">Built ${esc(day(m.built_at))} · ${esc(m.r)} · made with Metalens release files and D3.</p>`;
+  renderCite({ d });
+  document.querySelector("#foot").innerHTML = `<p class="muted">Built ${esc(day(m.built_at))} · ${esc(m.r)} · made with Metalens release files and D3.</p>`;
+}
+
+// ── Cite this work: this page, then the data it rests on ─────────────────────────────────────
+const VACCARO_TXT = "Vaccaro, M., Almaatouq, A. & Malone, T. (2024). When combinations of humans and AI are useful: A systematic review and meta-analysis. Nature Human Behaviour, 8, 2293–2303. https://doi.org/10.1038/s41562-024-02024-1";
+const VACCARO_BIB = `@article{vaccaro2024combinations,
+    author = {Vaccaro, Michelle and Almaatouq, Abdullah and Malone, Thomas},
+    title = {When combinations of humans and {AI} are useful: A systematic review and meta-analysis},
+    journal = {Nature Human Behaviour},
+    year = {2024},
+    volume = {8},
+    pages = {2293--2303},
+    doi = {10.1038/s41562-024-02024-1}
+}`;
+export function renderCite({ d }) {
+  const m = d.meta, rel = m.release;
+  const url = location.origin + location.pathname.replace(/index\.html$/, "");
+  const title = document.querySelector("h1").textContent.trim();
+  const year = String(m.built_at || rel.created_at || "").slice(0, 4);
+  const authors = (m.authors || "").split(",").map((a) => a.trim()).filter(Boolean);
+  const first = (authors[0] || "").split(" ").slice(-1)[0].toLowerCase().replace(/[^a-z]/g, "") || "dashboard";
+  const state = `release v${rel.number} of the Metalens dataset “${m.dataset_label}” (${day(rel.created_at)}${rel.doi ? `, doi:${rel.doi}` : ""})`;
+  const page = `${authors.join(", ") || "Anonymous"} (${year}) – “${title}”. A living meta-analysis, published online at ${url}. Retrieved from: '${url}' [Online Resource], showing ${state}.`;
+  const bib = `@misc{${first}${year}humansgenai,
+    author = {${authors.join(" and ")}},
+    title = {${title}: a living meta-analysis},
+    year = {${year}},
+    howpublished = {\\url{${url}}},
+    note = {Showing ${state}}
+}`;
+  const data = rel.citation ? `${rel.citation}${rel.doi && !rel.citation.includes(rel.doi) ? ` https://doi.org/${rel.doi}` : ""}` : "";
+  const box = (text) => `<div class="citebox"><button type="button" class="copy" title="copy to clipboard">copy</button>${esc(text)}</div>`;
+  document.querySelector("#cite-text").innerHTML = `
+    <p>This page rests on two sources of data: ${VAC} and a Metalens dataset. When citing it, please also cite them. The page can be cited as:</p>
+    ${box(page)}
+    <h3>BibTeX</h3>${box(bib)}
+    ${data ? `<h3>The GenAI data (release v${rel.number})</h3>${box(data)}` : ""}
+    <h3>The original meta-analysis</h3>${box(VACCARO_TXT)}${box(VACCARO_BIB)}`;
+  document.querySelectorAll("#cite-text .copy").forEach((b) => (b.onclick = async () => {
+    try { await navigator.clipboard.writeText(b.parentElement.textContent.replace(/^copy/, "").trim()); b.textContent = "copied"; setTimeout(() => (b.textContent = "copy"), 1500); }
+    catch { b.textContent = "select & copy"; }
+  }));
 }
