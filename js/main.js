@@ -20,7 +20,8 @@ async function init() {
   document.querySelectorAll("[data-vac]").forEach((el) => { el.innerHTML = VAC; });          // every mention of the paper links to it
   $("#dataline").innerHTML = `<span class="src"><span class="dot" style="background:var(--vaccaro)"></span><span><b>${VAC}</b> · ${m.sources.vaccaro.k} decision-task effect sizes from ${m.sources.vaccaro.n_exp} experiments, ${m.sources.vaccaro.years.join("–")}</span></span>`
     + `<span class="src"><span class="dot" style="background:var(--new)"></span><span><b>Metalens dataset</b> · “${esc(m.dataset_label)}”, release v${rel.number}, ${esc(day(rel.created_at))} · ${m.sources.new.n_papers} papers, ${m.sources.new.years.join("–")} · `
-    + `<span class="badge" title="how much of the dataset a person has checked against the papers">${esc((rel.credibility || {}).label || "")}</span></span></span>`;
+    + `<span class="badge" title="how much of the dataset a person has checked against the papers">${esc((rel.credibility || {}).label || "")}</span>`
+    + (rel.doi ? ` · <a href="https://doi.org/${encodeURIComponent(rel.doi)}" target="_blank" rel="noopener" title="the DOI of this release">doi:${esc(rel.doi)}</a>` : "") + `</span></span>`;
   $("#byline").innerHTML = `${esc(m.authors || "")}${m.authors ? " · " : ""}Built with <a href="${esc(m.metalens_url || "https://beta.metalens.tech")}" target="_blank" rel="noopener">Metalens</a>`;
   $("#forest-intro").innerHTML = `Each comparison sets the human–AI combination against a <b>baseline</b> and expresses the difference as a standardised mean difference (Hedges’ <i>g</i>; above zero = the combination did better). Two baselines are used, as in Fig. 1 of ${VAC}. <b>Left, synergy:</b> the baseline is whichever did better alone in that experiment, the human or the AI. <b>Right, augmentation:</b> the baseline is the human alone. Decision tasks only, with the GenAI studies laid over the earlier ones.`;
   ctx.text = await loadText(d);

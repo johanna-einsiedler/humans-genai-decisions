@@ -170,7 +170,8 @@ out <- list(
               authors = if (is.null(cfg$authors)) "" else cfg$authors, verified_by = if (is.null(cfg$verified_by)) "" else cfg$verified_by, metalens_url = if (is.null(cfg$metalens_url)) "" else cfg$metalens_url,
               release = list(number = meta$release$number, created_at = meta$release$created_at, content_sha = meta$release$content_sha,
                              dataset = meta$dataset$title, citation = meta$dataset$citation, credibility = meta$credibility,
-                             n_papers = meta$n_papers, left_out = meta$left_out),
+                             n_papers = meta$n_papers, left_out = meta$left_out,
+                             doi = if (is.null(meta$release$doi)) "" else meta$release$doi),
               sources = list(vaccaro = src_info(d[d$source == "vaccaro", ]), new = src_info(d[d$source == "new", ]))),
   pooled = pooled, subgroups = subgroups, omitted = omitted, effects = d[, keep])
 write_json(out, file.path(root, "data", "derived.json"), auto_unbox = TRUE, digits = 6, na = "null", dataframe = "rows", pretty = FALSE)
