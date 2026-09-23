@@ -1,15 +1,18 @@
 <!doctype html>
 <!-- The card image (preview.png): the synergy effect sizes of the page drawn as a field of strokes —
-     every study's 95% interval, sorted by its estimate, Vaccaro rows in sky, GenAI rows in orange.
-     Rendered by scripts/preview.py, so it changes with the data. 1200 × 630. -->
+     every study's 95% interval, sorted by its estimate, the earlier evidence in pale teal, the GenAI
+     studies in orange. Palette: the Metalens tokens (accent-dark / accent / accent-3 / series-2), so
+     the tile on the Metalens Dashboards page belongs to the page it sits on. Rendered by
+     scripts/preview.py, so it follows the data. 1200 × 630. -->
 <html lang="en"><head><meta charset="utf-8"/><title>preview</title>
 <style>
-  :root { --navy: #002f54; --deep: #001d36; --sky: #a5c8e1; --blue: #4d9be0; --new: #eb6834; --paper: #fbf7ef; }
-  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--navy); }
+  :root { --ink: #1b485e; --deep: #122740; --teal: #367380; --pale: #9cbcc4; --new: #eb6834;
+          --bg: #f5f5f5; --surface: #ffffff; --border: #e3e0da; --muted: #5f6b70; }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--bg); }
   svg { display: block; }
-  .t { font: 600 34px/1.15 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; fill: var(--paper); }
-  .k { font: 600 13px/1 -apple-system, "Segoe UI", Inter, Helvetica, sans-serif; letter-spacing: .12em; fill: var(--sky); }
-  .n { font: 14px/1 -apple-system, "Segoe UI", Inter, Helvetica, sans-serif; fill: var(--sky); opacity: .85; }
+  .t { font: 600 36px/1.15 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; fill: var(--deep); }
+  .k { font: 600 13px/1 -apple-system, "Segoe UI", Inter, Helvetica, sans-serif; letter-spacing: .12em; fill: var(--teal); }
+  .n { font: 14px/1 -apple-system, "Segoe UI", Inter, Helvetica, sans-serif; fill: var(--muted); }
 </style></head>
 <body><script type="module">
 import "../lib/d3.v7.min.js";
@@ -22,35 +25,36 @@ const x = d3.scaleLinear().domain([-4.5, 4.5]).range([left, W - right]).clamp(tr
 const y = d3.scaleLinear().domain([0, rows.length - 1]).range([top, H - bottom]);
 const svg = d3.select("body").append("svg").attr("width", W).attr("height", H).attr("viewBox", `0 0 ${W} ${H}`);
 const defs = svg.append("defs");
-const grad = defs.append("radialGradient").attr("id", "vig").attr("cx", "35%").attr("cy", "30%").attr("r", "85%");
-grad.append("stop").attr("offset", "0").attr("stop-color", "#0b4a7a");
-grad.append("stop").attr("offset", "1").attr("stop-color", "var(--deep)");
+const grad = defs.append("linearGradient").attr("id", "vig").attr("x1", "0").attr("y1", "0").attr("x2", "0").attr("y2", "1");
+grad.append("stop").attr("offset", "0").attr("stop-color", "var(--surface)");
+grad.append("stop").attr("offset", "1").attr("stop-color", "#eef2f2");   /* the faintest teal wash, as the app's cards */
 const glow = defs.append("filter").attr("id", "glow").attr("x", "-20%").attr("y", "-200%").attr("width", "140%").attr("height", "500%");
 glow.append("feGaussianBlur").attr("stdDeviation", 2.2).attr("result", "b");
 const m = glow.append("feMerge"); m.append("feMergeNode").attr("in", "b"); m.append("feMergeNode").attr("in", "SourceGraphic");
 svg.append("rect").attr("width", W).attr("height", H).attr("fill", "url(#vig)");
 // the two halves: left of zero the human–AI group is worse than the better of the two alone
-svg.append("rect").attr("x", left).attr("y", top - 10).attr("width", x(0) - left).attr("height", H - bottom - top + 20).attr("fill", "#000").attr("opacity", .12);
-svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", top - 10).attr("y2", H - bottom + 10).attr("stroke", "var(--paper)").attr("stroke-opacity", .5).attr("stroke-dasharray", "3 5");
+svg.append("rect").attr("x", left).attr("y", top - 10).attr("width", x(0) - left).attr("height", H - bottom - top + 20).attr("fill", "var(--pale)").attr("opacity", .14);
+svg.append("line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", top - 10).attr("y2", H - bottom + 10).attr("stroke", "var(--ink)").attr("stroke-opacity", .45).attr("stroke-dasharray", "3 5");
 const g = svg.append("g").attr("stroke-linecap", "round");
 // Vaccaro first (the field), GenAI on top (the figure)
 for (const pass of ["vaccaro", "new"]) {
   const sel = g.selectAll(null).data(rows.map((r, i) => ({ ...r, i })).filter((r) => r.source === pass)).join("g");
-  const col = pass === "new" ? "var(--new)" : "var(--sky)";
+  const col = pass === "new" ? "var(--new)" : "var(--teal)";
   sel.append("line").attr("x1", (d) => x(d.g_s_lo)).attr("x2", (d) => x(d.g_s_hi)).attr("y1", (d) => y(d.i)).attr("y2", (d) => y(d.i))
     .attr("stroke", col).attr("stroke-width", pass === "new" ? 3 : 1.3)
-    .attr("stroke-opacity", (d) => (pass === "new" ? .95 : .28 + .5 * Math.min(1, Math.abs(d.g_s) / 2.5)))
+    .attr("stroke-opacity", (d) => (pass === "new" ? .95 : .22 + .4 * Math.min(1, Math.abs(d.g_s) / 2.5)))
     .attr("filter", pass === "new" ? "url(#glow)" : null);
   sel.append("circle").attr("cx", (d) => x(d.g_s)).attr("cy", (d) => y(d.i)).attr("r", pass === "new" ? 4.5 : 1.7)
-    .attr("fill", pass === "new" ? "var(--new)" : "var(--paper)").attr("fill-opacity", pass === "new" ? 1 : .7);
+    .attr("fill", pass === "new" ? "var(--new)" : "var(--ink)").attr("fill-opacity", pass === "new" ? 1 : .75);
 }
 // the words, on a soft plinth
 const nNew = rows.filter((r) => r.source === "new").length, nV = rows.length - nNew;
-svg.append("rect").attr("x", 0).attr("y", H - bottom + 18).attr("width", W).attr("height", bottom - 18).attr("fill", "var(--deep)").attr("opacity", .7);
+svg.append("rect").attr("x", 0).attr("y", H - bottom + 18).attr("width", W).attr("height", bottom - 18).attr("fill", "var(--surface)");
+svg.append("line").attr("x1", 0).attr("x2", W).attr("y1", H - bottom + 18).attr("y2", H - bottom + 18).attr("stroke", "var(--border)").attr("stroke-width", 1);
 svg.append("text").attr("class", "k").attr("x", left).attr("y", H - bottom + 58).text("HUMAN–AI SYNERGY · DECISION TASKS");
 svg.append("text").attr("class", "t").attr("x", left).attr("y", H - bottom + 100).text("Humans & GenAI in Decision Tasks");
 const leg = svg.append("g").attr("transform", `translate(${left}, ${H - 32})`);
-leg.append("line").attr("x1", 0).attr("x2", 26).attr("stroke", "var(--sky)").attr("stroke-width", 2).attr("stroke-linecap", "round");
+leg.append("line").attr("x1", 0).attr("x2", 26).attr("stroke", "var(--teal)").attr("stroke-width", 2).attr("stroke-linecap", "round");
 leg.append("text").attr("class", "n").attr("x", 34).attr("y", 5).text(`Vaccaro et al. (2024), ${nV} effect sizes`);
 leg.append("line").attr("x1", 330).attr("x2", 356).attr("stroke", "var(--new)").attr("stroke-width", 3).attr("stroke-linecap", "round");
 leg.append("text").attr("class", "n").attr("x", 364).attr("y", 5).text(`GenAI studies, ${nNew} effect sizes · ${cfg.dataset_label || "Metalens dataset"}`);
