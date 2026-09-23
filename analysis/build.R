@@ -20,8 +20,15 @@ num <- function(x) suppressWarnings(as.numeric(x))
 yn  <- function(x) ifelse(is.na(x), NA, ifelse(x %in% c(TRUE, "True", "true", "Yes", "yes"), "Yes", "No"))
 
 # ── source 1: Vaccaro et al. (2024), decision tasks ─────────────────────────────────────────────
-v <- read.csv(file.path(root, "data", "vaccaro.csv"), fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
+# The papers' names carry accents, so the reader must work in UTF-8 whatever locale the caller
+# happens to have: under a C locale read.csv stops at the first accented character and silently
+# returns a fraction of the rows. Set the locale here, read the bytes plainly, drop the BOM.
+for (loc in c("en_US.UTF-8", "C.UTF-8", "UTF-8")) if (suppressWarnings(Sys.setlocale("LC_CTYPE", loc)) != "") break
+v <- read.csv(file.path(root, "data", "vaccaro.csv"), stringsAsFactors = FALSE)
+names(v)[1] <- sub("^\ufeff", "", names(v)[1])
+if (nrow(v) < 350) stop(sprintf("vaccaro.csv: read %d rows, expected ~370 — the file is truncated or its encoding was not read as UTF-8", nrow(v)))
 v <- v[v$Task_Type == "Decide", ]
+if (nrow(v) < 300) stop(sprintf("vaccaro.csv: %d decision-task rows, expected ~336", nrow(v)))
 vac <- data.frame(
   source = "vaccaro", id = paste0("v", v$ES_ID), exp = paste0("v", v$Exp_ID_Cleaned), row = NA_integer_, status = NA_character_,
   paper = gsub("_", " ", v$Paper_Name), title = v$Title, year = num(v$Year), venue = v$Venue, task = v$Task_Desc,
