@@ -39,18 +39,11 @@ jobs:
       - name: rebuild the numbers
         if: steps.fetch.outputs.changed == 'true' || github.event_name == 'push'
         run: Rscript analysis/build.R
-      # the card image is drawn from the numbers, so it is redrawn with them
-      - name: redraw preview.png
-        if: steps.fetch.outputs.changed == 'true'
-        run: |
-          pip install --quiet playwright && python3 -m playwright install --with-deps chromium
-          python3 -m http.server 8765 --bind 127.0.0.1 >/dev/null 2>&1 &
-          sleep 1; python3 scripts/preview.py
       - name: commit the new release and numbers
         if: steps.fetch.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data metalens.json preview.png && git commit -m "update to $(python3 -c "import json; print(json.load(open('data/config.json'))['release'])")" && git push
+          git add data metalens.json && git commit -m "update to $(python3 -c "import json; print(json.load(open('data/config.json'))['release'])")" && git push
       - uses: actions/upload-pages-artifact@v3
         with: { path: "." }
   deploy:

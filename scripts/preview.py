@@ -6,6 +6,9 @@
 Needs Playwright with Chrome (pip install playwright; it uses the system Chrome). Renders
 scripts/preview.html — the synergy effect sizes drawn as a field of strokes — at 1200x630, the
 size link previews expect. It is data-driven: rerun it after a rebuild and the picture follows.
+
+NOT run by the update Action any more: preview.png is a supplied illustration, so redrawing it
+would overwrite that. Run this by hand to go back to a picture drawn from the data.
 """
 import sys
 from pathlib import Path
