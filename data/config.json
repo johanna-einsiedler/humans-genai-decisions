@@ -2,7 +2,37 @@
   "release": "genai-human-in-the-loop-1636f30f-v1",
   "dataset_label": "GenAI – Human in the Loop",
   "genai_blurb": "all focusing on large language models in the context of decision tasks",
-  "authors": "Martin Haus, Johanna Einsiedler, Tiago Peixoto",
+  "authors": "Martin Haus, Johanna Einsiedler, Tiago C. Peixoto",
+  "author_details": [
+    {
+      "name": "Martin Haus",
+      "affiliation": "Postdoctoral researcher, Leibniz University Hannover",
+      "links": [
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?user=GjDZkeQAAAAJ"
+        },
+        {
+          "label": "LinkedIn",
+          "url": "https://www.linkedin.com/in/martin-haus-70a401377/"
+        }
+      ]
+    },
+    {
+      "name": "Johanna Einsiedler",
+      "affiliation": "Postdoctoral researcher, University of Basel & University of Copenhagen",
+      "links": [
+        {
+          "label": "johannaeinsiedler.com",
+          "url": "https://johannaeinsiedler.com"
+        }
+      ]
+    },
+    {
+      "name": "Tiago C. Peixoto",
+      "affiliation": "Senior Digital & AI Specialist, World Bank"
+    }
+  ],
   "metalens_url": "https://metalens.tech",
   "verified_by": "Martin Haus",
   "source": {

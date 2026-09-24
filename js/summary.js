@@ -38,8 +38,27 @@ export function renderMethods({ d }) {
     <p><b>Proportion scale.</b> The figures in original units use comparisons whose scores lie between 0 and 1 (${m.sources.vaccaro.k_prop} from Vaccaro et al., ${m.sources.new.k_prop} from the GenAI studies); only “who is the worst of the three” uses all comparisons. In the lead-by-bin figure, bins are right-closed (0–5 means above 0 up to 5) and a tie between team and AI does not count as the team beating the AI. GenAI studies that report an accuracy or percent score on 0–100 are divided by 100.</p>
     <p><b>Subgroups.</b> A subgroup row is drawn only when the GenAI studies have at least ${m.rule.min_k} effect sizes from at least ${m.rule.min_exp} experiments in it and Vaccaro et al. have that level too.</p>
     <p><b>The GenAI data</b> (“${esc(m.dataset_label)}”) were extracted from the papers with <a href="${esc(m.metalens_url || "https://beta.metalens.tech")}" target="_blank" rel="noopener">Metalens</a>, checked against the source by ${esc(m.verified_by || "a person")}, and frozen as release v${rel.number} (${esc(day(rel.created_at))}, ${esc((rel.credibility || {}).label || "")}).</p>`;
+  renderAuthors({ d });
   renderCite({ d });
   document.querySelector("#foot").innerHTML = `<p class="muted">Built ${esc(day(m.built_at))} · ${esc(m.r)} · made with Metalens release files and D3.</p>`;
+}
+
+// ── Authors: name, affiliation and where to find them ────────────────────────────────────────
+// Read from data/config.json (author_details) through derived.json, so the byline, the citation
+// and this block cannot drift apart.
+export function renderAuthors({ d }) {
+  const host = document.querySelector("#authors-list");
+  if (!host) return;
+  const people = d.meta.author_details || [];
+  if (!people.length) { document.querySelector("#authors").hidden = true; return; }
+  host.innerHTML = people.map((p) => {
+    const links = (p.links || []).map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("");
+    return `<div class="author">
+      <div class="an">${esc(p.name || "")}</div>
+      ${p.affiliation ? `<div class="aa">${esc(p.affiliation)}</div>` : ""}
+      ${links ? `<div class="al">${links}</div>` : ""}
+    </div>`;
+  }).join("");
 }
 
 // ── Cite this work: this page, then the data it rests on ─────────────────────────────────────

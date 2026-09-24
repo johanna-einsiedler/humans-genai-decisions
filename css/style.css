@@ -81,3 +81,10 @@ a { color: var(--blue); text-underline-offset: 2px; } a:hover { color: var(--nav
 .citebox .copy { position: absolute; top: 10px; right: 10px; border: 1px solid var(--axis); background: var(--surface); color: var(--ink-2); border-radius: 6px; padding: 3px 8px; font: 12px var(--sans); cursor: pointer; }
 .citebox .copy:hover { color: var(--navy); border-color: var(--navy); }
 #cite h3 { margin: 22px 0 4px; }
+
+/* Authors: one card per person — name, affiliation, and where to find them. */
+.authors { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; max-width: 900px; }
+.author { background: var(--surface); border: 1px solid var(--grid); border-left: 3px solid var(--navy); border-radius: 10px; padding: 12px 16px 14px; }
+.author .an { font: 600 17px/1.25 var(--serif); color: var(--navy); }
+.author .aa { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; }
+.author .al { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }

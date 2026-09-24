@@ -13,6 +13,9 @@ args <- commandArgs(trailingOnly = FALSE)
 here <- dirname(sub("--file=", "", args[grep("--file=", args)])); if (!length(here)) here <- "analysis"
 root <- normalizePath(file.path(here, ".."))
 cfg  <- fromJSON(file.path(root, "data", "config.json"))
+# author_details is nested (each author has a list of links); read it unsimplified so it
+# survives the round trip as an array of objects rather than being flattened to a data frame.
+cfg_raw <- fromJSON(file.path(root, "data", "config.json"), simplifyVector = FALSE)
 rel_dir <- file.path(root, "data", cfg$release)
 MIN_K <- 4; MIN_EXP <- 2            # a subgroup of the new data is shown from 4 effect sizes in 2 experiments
 
@@ -174,7 +177,9 @@ out <- list(
               rule = list(min_k = MIN_K, min_exp = MIN_EXP), unit = unit$id, release_dir = cfg$release,
               dataset_label = if (is.null(cfg$dataset_label)) meta$dataset$title else cfg$dataset_label,
               genai_blurb = if (is.null(cfg$genai_blurb)) "" else cfg$genai_blurb,
-              authors = if (is.null(cfg$authors)) "" else cfg$authors, verified_by = if (is.null(cfg$verified_by)) "" else cfg$verified_by, metalens_url = if (is.null(cfg$metalens_url)) "" else cfg$metalens_url,
+              authors = if (is.null(cfg$authors)) "" else cfg$authors,
+              author_details = if (is.null(cfg_raw$author_details)) list() else cfg_raw$author_details,
+              verified_by = if (is.null(cfg$verified_by)) "" else cfg$verified_by, metalens_url = if (is.null(cfg$metalens_url)) "" else cfg$metalens_url,
               release = list(number = meta$release$number, created_at = meta$release$created_at, content_sha = meta$release$content_sha,
                              dataset = meta$dataset$title, citation = meta$dataset$citation, credibility = meta$credibility,
                              n_papers = meta$n_papers, left_out = meta$left_out,
